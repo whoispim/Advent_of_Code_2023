@@ -1,5 +1,8 @@
 import re
 
+# def pre_prune(sp, gr, debug):
+    
+
 def arrange(sp, gr, debug):
     #pruning
     if debug:
@@ -20,6 +23,8 @@ def arrange(sp, gr, debug):
                     gr = gr[1:]
                 else:
                     return 0
+            elif sum(len(x)+1 for x in sp)-1 < sum(gr)+len(gr)-1: # remaining string too short
+                return 0
     
     n = 0
     # are we finished?
@@ -80,6 +85,8 @@ for s, g in zip(springs, groups):
 print(sum_of_arrangements) # a:6852
 
 sum_of_arrangements = 0
+c = 1
+l = len(springs_big)
 for s, g in zip(springs_big, groups_big):
     # print(s,g)
     a = arrange(s,g, True)
@@ -89,6 +96,7 @@ for s, g in zip(springs_big, groups_big):
     #     print(s,g)
     #     break
     sum_of_arrangements += a
-    # print(a, s, g)
+    print(f'{c} / {l}: ',a, s, g)
+    c += 1
 
-print(sum_of_arrangements) # a:6852
+print(sum_of_arrangements) # nr 11 ([10]) ist hart...
