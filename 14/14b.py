@@ -1,10 +1,3 @@
-# real  51m34.214s
-# user  51m26.107s
-# sys   0m0.395s
-
-# That's the right answer! You are one gold star closer to restoring snow operations.
-# 😬😬😬
-
 def print_rocks(r,c, max_i, max_j):
     for i in range(max_i):
         for j in range(max_j):
@@ -16,16 +9,7 @@ def print_rocks(r,c, max_i, max_j):
                 print('.', end='')
         print()
 
-def my_memo(func):
-    memo = {}
-    
-    def helper(rrf):
-        if rrf not in memo:
-            memo[rrf] = func(rrf)
-        return memo[rrf]
-    return helper
 
-@my_memo
 def cycle_rocks(round_rocks_frozen):
     global field_width
     global field_length
@@ -89,7 +73,6 @@ with open('14/input.txt', 'r') as f:
         field_length += 1
     field_width = len(line)
 
-
 square_by_col = [
     set([x[0] for x in cube_rocks if x[1] == y])
     for y in range(field_width)
@@ -99,13 +82,21 @@ square_by_row = [
     for y in range(field_length)
     ]
 
+memo = {}
 round_rocks = frozenset(round_rocks)
 for n in range(1000000000):
-    if n%1000000 == 0:
-        print(f'{n/10000000:4.1f} %')
+    if not round_rocks in memo:
+        memo[round_rocks] = n
+        round_rocks = cycle_rocks(round_rocks)
+    else:
+        break
+print(f'First repeat at cycle {n}, showing same configuration as cycle {memo[round_rocks]}.')
+remainder = (1000000000 - n) % (n - memo[round_rocks])
+print(f'Remaining cycles: {remainder}')
+for i in range(remainder):
     round_rocks = cycle_rocks(round_rocks)
-            
-print_rocks(round_rocks, cube_rocks, field_length, field_width)
+
+# print_rocks(round_rocks, cube_rocks, field_length, field_width)
 
 total_load = 0
 for pos in round_rocks:
