@@ -11,7 +11,7 @@ dir_dict = {
     'U': (-1, 0)
     }
 
-print(instructions)
+# print(instructions)
 pos = (0,0)
 dug = [(0,0)]
 in_out_walls = [(0,0)]
@@ -29,7 +29,7 @@ for inst in instructions:
 if in_out_walls[-1] == (0,0):
     _ = in_out_walls.pop()
 
-print(dug)
+# print(dug)
 ij_min = (min(x[0] for x in dug), min(x[1] for x in dug))
 ij_max = (max(x[0] for x in dug), max(x[1] for x in dug))
 
@@ -54,4 +54,4 @@ for i in range(ij_min[0], ij_max[0]+1):
 #             print('.', end='')
 #     print()
 
-print(f'Total size of the dug out lagoon: {len(lagoon)}')
+print(f'a: Total size of the dug out lagoon: {len(lagoon)}')
