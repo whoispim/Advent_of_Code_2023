@@ -2,14 +2,14 @@ def gen_work(comparison):
     if '<' in comparison:
         var, val = comparison.split('<')
         def work(part):
-            return part[var] < val
+            return part[var] < int(val)
     elif '>' in comparison:
         var, val = comparison.split('>')
         def work(part):
-            return part[var] > val
+            return part[var] > int(val)
     return work
 
-with open('19/input_t.txt', 'r') as f:
+with open('19/input.txt', 'r') as f:
     workflows_raw, parts_raw = f.read().strip().split('\n\n')
     parts = []
     for part in parts_raw.split('\n'):
@@ -36,7 +36,33 @@ with open('19/input_t.txt', 'r') as f:
                 task_list.append(task)
             workflows[name] = task_list
     
-        
-print(parts)
-print(workflows)
-# workflows['px'][0][0](part[0])
+parts_accepted = []
+
+for part in parts:
+    curr_flow = 'in'
+    finished = False
+    while not finished:
+        # print(f'Curent Flow: {curr_flow}')
+        for step in workflows[curr_flow]:
+            # print(f'  Current Step: {step}')
+            if isinstance(step, list):
+                if step[0](part):
+                    result = step[1]
+                else:
+                    continue
+            else:
+                result = step
+            if isinstance(result, bool):
+                parts_accepted.append(result)
+                finished = True
+                break
+            else:
+                curr_flow = result
+                break
+
+sum_ratings = 0
+for i, hot_or_not in enumerate(parts_accepted):
+    if hot_or_not:
+        sum_ratings += sum(parts[i].values())
+
+print(f'The sum of XMAS ratings of all accepted parts is {sum_ratings}')
